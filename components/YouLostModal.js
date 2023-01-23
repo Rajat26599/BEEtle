@@ -5,6 +5,7 @@ import { toggleNext } from "../redux/actions/actions";
 import { setLives } from "../redux/actions/lifeActions";
 
 const YouLostModal = () => {
+    const ans = useSelector(state => state.ansReducer.ans);
     const [modalVisible, setModalVisible] = useState(true);
     const dispatch = useDispatch();
 
@@ -26,7 +27,15 @@ const YouLostModal = () => {
                 }}>
                 <View style={styles.centeredView}>
                     <View style={styles.modalView}>
-                        <Text style={styles.modalText}>You Lost!</Text>
+                        <Text style={{...styles.modalText, fontSize:30, paddingBottom:20, color:'red'}}>You Lost!</Text>
+                        <Text style={styles.modalText}>Correct word: </Text>
+                        <Text style={styles.correctWord}>
+                            {
+                                ans.map((item, index) => {
+                                    return item.letter
+                                }) 
+                            }
+                        </Text>
                         <Image
                             style={styles.deadBeetleImg}
                             source={require('../assets/deadBeetle.webp')}
@@ -84,6 +93,13 @@ const styles = StyleSheet.create({
     modalText: {
         textAlign: 'center',
         fontWeight: 'bold',
+    },
+    correctWord: {
+        flexDirection: 'row',
+        fontSize: 30,
+        textAlign: 'center',
+        fontWeight: 'bold',
+        color: 'green'
     },
     deadBeetleImg: {
         width: 200,

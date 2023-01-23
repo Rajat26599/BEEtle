@@ -51,7 +51,6 @@ const Keypad = () => {
 
 const styles = StyleSheet.create({
     keypadContainer: {
-        backgroundColor: 'red',
         width: '100%',
         alignItems: 'center',
         justifyContent: 'center',
