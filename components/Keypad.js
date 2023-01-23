@@ -1,6 +1,7 @@
 import { StyleSheet, View, Text, TouchableOpacity } from "react-native";
 import { useDispatch, useSelector } from "react-redux";
 import { toggleHide, toggleNext } from "../redux/actions/actions";
+import { reduceLives, setLives } from "../redux/actions/lifeActions";
 
 const Keypad = () => {
     const ans = useSelector(state => state.ansReducer.ans);
@@ -10,41 +11,40 @@ const Keypad = () => {
         dispatch(toggleHide(chosen));
 
         //do next if all hide false
+        var found = false;
         var count = 0;
         ans.forEach(element => {
             if(element.hide===false) count++;
+            if(element.letter==chosen) found = true;
         });
-        if(count===ans.length) dispatch(toggleNext());
+        //if spelling is complete do next and reset lives
+        if(count===ans.length) {
+            dispatch(setLives());
+            dispatch(toggleNext());
+        };
+        if(!found) {
+            dispatch(reduceLives());
+        };
     }
     return (
         <View style={styles.keypadContainer}>
-            <View style={styles.row1}>
-                {
-                    "QWERTYUIOP".split('').map((element, index) => {
-                        return <TouchableOpacity style={styles.letterContainer} key={index} onPress={() => handleChangeHide(element)}>
-                            <Text>{element}</Text>
-                        </TouchableOpacity>
-                    })
-                }
-            </View>
-            <View style={styles.row2}>
-                {
-                    "ASDFGHJKL".split('').map((element, index) => {
-                        return <TouchableOpacity style={styles.letterContainer} key={index} onPress={() => handleChangeHide(element)}>
-                            <Text>{element}</Text>
-                        </TouchableOpacity>
-                    })
-                }
-            </View>
-            <View style={styles.row3}>
-                {   
-                    "ZXCVBNM".split('').map((element, index) => {
-                        return <TouchableOpacity style={styles.letterContainer} key={index} onPress={() => handleChangeHide(element)}>
-                            <Text>{element}</Text>
-                        </TouchableOpacity>
-                    })
-                }
-            </View>
+            {
+                ["QWERTYUIOP", "ASDFGHJKL", "ZXCVBNM"].map((row, ind) => {
+                    return (
+                        <View style={styles.row} key={ind}>
+                            {
+                                row.split('').map((element, index) => {
+                                    return (
+                                        <TouchableOpacity style={styles.letterContainer} key={index} onPress={() => handleChangeHide(element)}>
+                                            <Text>{element}</Text>
+                                        </TouchableOpacity>
+                                    )
+                                })
+                            }
+                        </View>
+                    )
+                })
+            }
         </View>
     )
 }
@@ -56,13 +56,7 @@ const styles = StyleSheet.create({
         alignItems: 'center',
         justifyContent: 'center',
     },
-    row1: {
-        flexDirection: 'row'
-    },
-    row2: {
-        flexDirection: 'row'
-    },
-    row3: {
+    row: {
         flexDirection: 'row'
     },
     letterContainer: {
