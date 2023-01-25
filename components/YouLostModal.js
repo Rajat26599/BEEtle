@@ -3,14 +3,27 @@ import { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { toggleNext } from "../redux/actions/actions";
 import { setLives } from "../redux/actions/lifeActions";
+import { resetScore, updateHighScore } from '../redux/actions/scoreActions';
+import { resetInvalidLetters } from "../redux/actions/keypadActions";
+
 
 const YouLostModal = () => {
     const ans = useSelector(state => state.ansReducer.ans);
+    const { score, highScore } = useSelector(state => state.scoreReducer);
+
     const [modalVisible, setModalVisible] = useState(true);
     const dispatch = useDispatch();
 
     const handlePlayAgain = () => {
         setModalVisible(!modalVisible);
+        // reset score and update high score if game over 
+        if(score>highScore) dispatch(updateHighScore(score));
+        dispatch(resetScore());
+
+        // reset keypad invalid letters
+        dispatch(resetInvalidLetters());
+
+        // go to next question and reset lives
         dispatch(toggleNext());
         dispatch(setLives());
     }

@@ -11,10 +11,9 @@ import LifeBar from './LifeBar';
 import YouLostModal from './YouLostModal';
 
 const Playground = () => { 
-    const ans = useSelector(state => state.ansReducer.ans);
-    const next = useSelector(state => state.ansReducer.next);
+    const { ans, next } = useSelector(state => state.ansReducer);
+    console.log(ans);
     const lives = useSelector(state => state.lifeReducer.lives);
-
     const dispatch = useDispatch();
   
     const [def, setDef] = useState('');
@@ -48,6 +47,14 @@ const Playground = () => {
     useEffect(() => {
       fetchWord();
     },[next]);
+
+    // useEffect(() => {
+    //   // reset score and update high score if game over
+    //   if(lives<=0) {
+    //     if(score>highScore) dispatch(updateHighScore(score));
+    //     dispatch(resetScore());
+    //   }
+    // }, [lives]);
   
     return (
       <View style={styles.container}>
@@ -110,7 +117,9 @@ const Playground = () => {
     },
     letterContainer: {
       flexDirection: 'row',
-      paddingBottom: 50,
+      justifyContent: 'center',
+      marginBottom: 50,
+      paddingVertical: 30,
     },
     letter: {
       fontSize: 25,
