@@ -8,7 +8,7 @@ const Home = ({navigation}) => {
                 style={styles.walkingBeetleImg}
                 source={require('../assets/walkingBeetle.gif')}
             />
-            <TouchableHighlight onPress={() => navigation.navigate('Playground')}>
+            <TouchableHighlight underlayColor="#DDDDDD" onPress={() => navigation.navigate('Dashboard')}>
                 <View style={styles.button}>
                     <Text style={styles.buttonText}>PLAY</Text>
                 </View>
@@ -41,6 +41,7 @@ const styles = StyleSheet.create({
         alignItems: 'center',
         backgroundColor: '#ff2222',
         padding: 10,
+        borderRadius: 10,
     },
     buttonText: {
         color: 'white',
